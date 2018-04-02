@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lylg.dao.CustomerMapper" >
+  <resultMap id="BaseResultMap" type="cn.lylg.model.Customer" >
+    <id column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="cname" property="cname" jdbcType="VARCHAR" />
+    <result column="coname" property="coname" jdbcType="VARCHAR" />
+    <result column="cophone" property="cophone" jdbcType="VARCHAR" />
+    <result column="coaddress" property="coaddress" jdbcType="VARCHAR" />
+    <result column="cotype" property="cotype" jdbcType="VARCHAR" />
+    <result column="cosale" property="cosale" jdbcType="VARCHAR" />
+    <result column="codate" property="codate" jdbcType="DATE" />
+    <collection property="passwordsCid" ofType="cn.lylg.model.Password" column="cid" select="cn.lylg.dao.PasswordMapper.selectByCid" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    cid, cname, coname, cophone, coaddress, cotype, cosale, codate
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from customer
+    where cid = #{cid,jdbcType=INTEGER}
+  </select>
+  
+  <!--查询所有的数据  -->
+  <select id="selectFenye" resultMap="BaseResultMap" parameterType="cn.lylg.model.Fenye" >
+    select 
+    <include refid="Base_Column_List" />
+    from customer   
+     order by cid limit  #{page,jdbcType=INTEGER} , #{rows,jdbcType=INTEGER} 
+  </select>
+  
+  <!--查询所有的数据  -->
+  <select id="selectCount"  resultType="java.lang.Integer" >
+    select 
+    count(*) 
+    from customer   
+  
+  </select>
+  
+  <!--查询所有的数据  -->
+  <select id="selectFenyeByname" resultMap="BaseResultMap" parameterType="cn.lylg.model.Fenye" >
+    select 
+    <include refid="Base_Column_List" />
+    from customer   where cname like '%${name}%'
+     order by cid limit  #{page,jdbcType=INTEGER} , #{rows,jdbcType=INTEGER} 
+  </select>
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from customer
+    where cid = #{cid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.lylg.model.Customer" >
+    insert into customer (cid, cname, coname, 
+      cophone, coaddress, cotype, 
+      cosale, codate)
+    values (#{cid,jdbcType=INTEGER}, #{cname,jdbcType=VARCHAR}, #{coname,jdbcType=VARCHAR}, 
+      #{cophone,jdbcType=VARCHAR}, #{coaddress,jdbcType=VARCHAR}, #{cotype,jdbcType=VARCHAR}, 
+      #{cosale,jdbcType=VARCHAR}, #{codate,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.lylg.model.Customer" >
+    insert into customer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      cid,
+      cname,
+      coname,
+      cophone,
+      coaddress,
+      cotype,
+      cosale,
+      codate,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{cid,jdbcType=INTEGER},
+      #{cname,jdbcType=VARCHAR},
+      #{coname,jdbcType=VARCHAR},
+      #{cophone,jdbcType=VARCHAR},
+      #{coaddress,jdbcType=VARCHAR},
+      #{cotype,jdbcType=VARCHAR},
+      #{cosale,jdbcType=VARCHAR},
+      #{codate,jdbcType=DATE},
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.lylg.model.Customer" >
+    update customer
+    <set >
+      <if test="cname != null" >
+        cname = #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="coname != null" >
+        coname = #{coname,jdbcType=VARCHAR},
+      </if>
+      <if test="cophone != null" >
+        cophone = #{cophone,jdbcType=VARCHAR},
+      </if>
+      <if test="coaddress != null" >
+        coaddress = #{coaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="cotype != null" >
+        cotype = #{cotype,jdbcType=VARCHAR},
+      </if>
+      <if test="cosale != null" >
+        cosale = #{cosale,jdbcType=VARCHAR},
+      </if>
+      <if test="codate != null" >
+        codate = #{codate,jdbcType=DATE},
+      </if>
+    </set>
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.lylg.model.Customer" >
+    update customer
+    set cname = #{cname,jdbcType=VARCHAR},
+      coname = #{coname,jdbcType=VARCHAR},
+      cophone = #{cophone,jdbcType=VARCHAR},
+      coaddress = #{coaddress,jdbcType=VARCHAR},
+      cotype = #{cotype,jdbcType=VARCHAR},
+      cosale = #{cosale,jdbcType=VARCHAR},
+      codate = #{codate,jdbcType=DATE}
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>
+</mapper>
